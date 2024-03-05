@@ -31,24 +31,25 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:latest
           build-args: VERSION=${{ env.VERSION }}
 
-      # - name: Set up environment
-      #   run: |
-      #     # Extract the current version from your environment variable
-      #     CURRENT_VERSION=${{ env.VERSION }}
+       -  name: Set up environment
+          run: |
+            # Retrieve the current version from an environment variable
+            CURRENT_VERSION=$VERSION
 
-      #     # Split the version string into its components
-      #     IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+            # Split the version number into its components
+            IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
 
-      #     # Increment the patch version (last part of the version)
-      #     ((VERSION_PARTS[2]++))
+            # Increment the last part of the version number
+            NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((${VERSION_PARTS[2]} + 1))"
 
-      #     # Combine the version parts back into a string
-      #     NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
+            echo "New version number: $NEW_VERSION"
 
-      #     # Set the new version back to the environment variable
-      #     echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+            # Set the new version number as an output variable
+            echo "::set-output name=new_version::$NEW_VERSION"
 
-      - name: Display new version
-        run: echo "New version is ${{ env.VERSION }}"
+      - name: Use the new version
+        run: |
+          echo "The new version is ${{ steps.setup.outputs.new_version }}"
+
 
   
