@@ -29,17 +29,26 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:latest
+          build-args: VERSION=${{ env.VERSION }}
+          
+      - name: Set up environment
+        run: |
+          # Extract the current version from your environment variable
+          CURRENT_VERSION=${{ env.VERSION }}
 
-  # increase-version:
-  #   runs-on: ubuntu-latest
+          # Split the version string into its components
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
 
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Set up JDK 17
-  #     uses: actions/setup-java@v3
-  #     with:
-  #       java-version: '17'
-  #       distribution: 'temurin'
-  #       cache: maven
-  #   - name: Build with Maven
-  #     run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}
+          # Increment the patch version (last part of the version)
+          ((VERSION_PARTS[2]++))
+
+          # Combine the version parts back into a string
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
+
+          # Set the new version back to the environment variable
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Display new version
+        run: echo "New version is ${{ env.VERSION }}"
+
+  
