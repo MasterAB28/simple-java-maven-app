@@ -31,21 +31,21 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:latest
           build-args: VERSION=${{ env.VERSION }}
 
-       -  name: Set up environment
-          run: |
-            # Retrieve the current version from an environment variable
-            CURRENT_VERSION=$VERSION
+      - name: Set up environment
+        run: |
+          # Retrieve the current version from an environment variable
+          CURRENT_VERSION=$VERSION
 
-            # Split the version number into its components
-            IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          # Split the version number into its components
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
 
-            # Increment the last part of the version number
-            NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((${VERSION_PARTS[2]} + 1))"
+          # Increment the last part of the version number
+          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$((${VERSION_PARTS[2]} + 1))"
 
-            echo "New version number: $NEW_VERSION"
+          echo "New version number: $NEW_VERSION"
 
-            # Set the new version number as an output variable
-            echo "::set-output name=new_version::$NEW_VERSION"
+          # Set the new version number as an output variable
+          echo "::set-output name=new_version::$NEW_VERSION"
 
       - name: Use the new version
         run: |
