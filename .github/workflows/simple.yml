@@ -29,26 +29,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:latest
-          build-args: VERSION=${{ var.VERSION }}
-          
-      - name: Set up environment
-        run: |
-          # Extract the current version from your environment variable
-          CURRENT_VERSION=${{ var.VERSION }}
-
-          # Split the version string into its components
-          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
-
-          # Increment the patch version (last part of the version)
-          ((VERSION_PARTS[2]++))
-
-          # Combine the version parts back into a string
-          NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
-
-          # Set the new version back to the environment variable
-          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-      - name: Display new version
-        run: echo "New version is ${{ var.VERSION }}"
+          build-args: VERSION=${{ env.VERSION }}
+      
 
   
