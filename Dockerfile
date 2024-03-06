@@ -7,7 +7,8 @@ COPY pom.xml .
 
 COPY src src
 
-RUN mvn versions:set -DnewVersion=$VERSION package
+RUN mvn versions:set -DnewVersion=$VERSION 
+RUN mvn package
 
 FROM openjdk:11-jre-slim
 ARG VERSION
