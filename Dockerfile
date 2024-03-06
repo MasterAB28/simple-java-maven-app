@@ -17,4 +17,4 @@ WORKDIR /app
 
 COPY --from=builder /app/target/*.jar /app/
 
-ENTRYPOINT java -jar my-app-*.jar
+CMD java -jar my-app-*.jar
