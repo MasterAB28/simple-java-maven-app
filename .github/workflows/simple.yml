@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/simple_app:${{ vars.VERSION }}
           build-args: VERSION=${{ vars.VERSION }}
 
 
