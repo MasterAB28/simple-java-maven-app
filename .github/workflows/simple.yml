@@ -12,12 +12,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
-        
+
       - 
-      name: Download Dependency-Check CLI
-      run: |
-        curl -LO https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
-        unzip -q $GITHUB_WORKSPACE/dependency-check-7.0.0-release.zip -d $GITHUB_WORKSPACE/dependency-check
+        name: Download Dependency-Check CLI
+        run: |
+          curl -LO https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
+          unzip -q $GITHUB_WORKSPACE/dependency-check-7.0.0-release.zip -d $GITHUB_WORKSPACE/dependency-check
 
 
 
