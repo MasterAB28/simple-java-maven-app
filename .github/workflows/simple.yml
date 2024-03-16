@@ -12,6 +12,25 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v4
+      - 
+        name: Download Dependency-Check CLI
+        run: |
+          curl -LO https://dl.bintray.com/jeremy-long/owasp/dependency-check-7.0.0-release.zip
+          unzip dependency-check-7.0.0-release.zip
+
+      - 
+        name: Run Dependency-Check
+        run: |
+          ./dependency-check/bin/dependency-check.sh --scan ./target --project "Your Project Name" --format JSON
+
+      - 
+        name: Parse Dependency-Check Report
+        run: |
+          CRITICAL_VULNERABILITIES=$(jq '.dependencies[] | select(.vulnerabilities[].severity == "Critical")' dependency-check-report.json)
+          if [ ! -z "$CRITICAL_VULNERABILITIES" ]; then
+            echo "Critical vulnerabilities found, failing the pipeline."
+            exit 1
+          fi
       -
         name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -42,5 +61,6 @@ jobs:
       with:
         name: 'VERSION'
         token: ${{ secrets.REPO_ACCESS_TOKEN }}    
+        
 
   
