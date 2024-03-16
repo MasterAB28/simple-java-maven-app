@@ -17,7 +17,7 @@ jobs:
       - 
           name: Install Trivy
           run: |
-          docker pull aquasec/trivy:latest
+            docker pull aquasec/trivy:latest
 
       - 
         name: Scan Dockerfile
