@@ -11,8 +11,6 @@ RUN mvn versions:set -DnewVersion=$VERSION
 RUN mvn package
 
 FROM openjdk:11-jre-slim
-ARG VERSION
-ENV VERSION=${VERSION}
 WORKDIR /app
 
 COPY --from=builder /app/target/*.jar /app/
